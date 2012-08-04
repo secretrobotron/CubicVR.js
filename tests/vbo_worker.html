@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script>
+      (function(){
+        function EventManager(){
+          var _listeners = {};
+
+          this.on = function(name, listener){
+            if(!_listeners[name]){
+              _listeners[name] = [];
+            }
+            _listeners[name].push(listener);
+          };
+
+          this.off = function(name, listener){
+            var idx;
+            var listeners = _listeners[name]
+            if(listeners && listeners.length){
+              idx = listeners.indexOf(listener);
+              listeners.splice(idx, 1);
+            }
+          };
+
+          this.fire = function(name, data){
+            var listeners = _listeners[name];
+            if(listeners){
+              listeners = listeners.slice();
+              while(listeners.length){
+                listeners.pop()(data);
+              }
+            }
+          };
+        }
+
+        var eventManager = new EventManager();
+        var worker = new Worker('../source/CubicVR.VBOWorker.js');
+
+        worker.addEventListener('message', function(e){
+          eventManager.fire(e.data.message, e.data.data);
+        });
+
+        eventManager.on('init', function(){
+          console.log('init');
+        });
+
+        eventManager.on('log', function(data){
+          console.log(data.join(' '));
+        });
+
+        worker.postMessage('init');
+        worker.postMessage('start');
+      }());
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

@@ -140,7 +140,7 @@ catch (e) {
     base.enums = CubicVR.enums;
     base.MAX_LIGHTS = 6;
     
-        // class extension functions from http://www.lshift.net/blog/2006/08/03/subclassing-in-javascript-part-2
+    // class extension functions from http://www.lshift.net/blog/2006/08/03/subclassing-in-javascript-part-2
     function general_extend(superclass, constructor, prototype) {
         var withoutcon = function () {};
         withoutcon.prototype = superclass.prototype;
